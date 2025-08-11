@@ -14,12 +14,18 @@ public class Movement : MonoBehaviour
 
     [SerializeField] Vector3 moveDirection;
     [SerializeField] Vector3 moveRotation;
+
+    [SerializeField] private bool canMoveR = true;
+    [SerializeField] private bool canMoveL = true;
+    [SerializeField] private bool canMoveU = true;
+    [SerializeField] private bool canMoveD = true;
      
 
     // Start is called before the first frame update
     void Start()
     {
         moveDirection = new Vector3 (moveSpeed, 0, 0);
+        canMoveD = false;
 
         
     }
@@ -28,29 +34,52 @@ public class Movement : MonoBehaviour
     void Update()
     {
 
-        if (Input.GetKey(KeyCode.W))
+        if (Input.GetKey(KeyCode.W) && canMoveU)
         {
             moveDirection = new Vector3 (0, moveSpeed, 0);
             moveRotation = new Vector3 (0,0,rotUP);
 
+            canMoveD = false;
+
+            canMoveR = true;
+            canMoveL = true;
+
+
         }
 
-        if (Input.GetKey(KeyCode.S))
+        if (Input.GetKey(KeyCode.S) && canMoveD)
         {
             moveDirection = new Vector3(0, -moveSpeed, 0);
             moveRotation = new Vector3(0,0,-rotUP);
+
+            canMoveU = false;
+
+            canMoveL = true;
+            canMoveR = true;
         }
 
-        if (Input.GetKey(KeyCode.D))
+        if (Input.GetKey(KeyCode.D) && canMoveR)
         {
             moveDirection = new Vector3(moveSpeed, 0, 0);
             moveRotation = new Vector3(0, 0, 0);
+
+            canMoveL = false;
+
+            canMoveU = true;
+            canMoveD = true;
+
+
         }
 
-        if (Input.GetKey(KeyCode.A))
+        if (Input.GetKey(KeyCode.A) && canMoveL)
         {
             moveDirection = new Vector3(-moveSpeed, 0, 0); 
-            moveRotation = new Vector3(rotLeft,0,rotLeft);    
+            moveRotation = new Vector3(rotLeft,0,rotLeft);
+
+            canMoveR = false;
+
+            canMoveU = true;
+            canMoveD = true;
         }
 
         moveTimer += Time.deltaTime;
