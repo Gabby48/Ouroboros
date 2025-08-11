@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class PelletSpawner : MonoBehaviour
 {
     public GameObject pelletPrefab;
     public LayerMask wallLayer;
+   
 
 
     [SerializeField] private float bottom, top, leftbound, rightbound;
@@ -14,11 +16,17 @@ public class PelletSpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Pellet.OnPelletCollected += Pellet_OnPelletCollected;
+
         FindBoundsWithRaycasts();
         SpawnPellet();
         
     }
 
+    private void Pellet_OnPelletCollected(object sender, System.EventArgs e)
+    {
+        SpawnPellet();
+    }
     // Update is called once per frame
     void Update()
     {
@@ -45,8 +53,8 @@ public class PelletSpawner : MonoBehaviour
 
     public void SpawnPellet()
     {
-        float x = Random.Range(leftbound, rightbound);
-        float y = Random.Range(bottom, top);
+        float x = UnityEngine.Random.Range(leftbound, rightbound);
+        float y = UnityEngine.Random.Range(bottom, top);
 
         Vector2 spawnPos = new Vector2(x, y);
         Instantiate(pelletPrefab, spawnPos, Quaternion.identity);
