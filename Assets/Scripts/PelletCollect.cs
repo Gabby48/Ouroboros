@@ -24,6 +24,7 @@ public class PelletCollect : MonoBehaviour
         if (pellet != null)
         {
             Debug.Log("A pellet was colected");
+            pellet.PelletCollect();
         }
     }
 
