@@ -382,7 +382,6 @@ MonoBehaviour:
   wallLayer:
     serializedVersion: 2
     m_Bits: 8
-  pellet: {fileID: 8452239852850705533, guid: 0e0dacf664949b2429fa4d3c894f2706, type: 3}
   bottom: 0
   top: 0
   leftbound: 0
@@ -479,6 +478,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1378730375}
+  - component: {fileID: 1378730376}
   m_Layer: 0
   m_Name: Snake Visual
   m_TagString: Untagged
@@ -502,6 +502,24 @@ Transform:
   m_Father: {fileID: 1583468611}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1378730376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1378730374}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b06c06259deabea43bc559c501a7df25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bodyPrefab: {fileID: 1530282691596837059, guid: 6cc612d052214b44eb9277911f308983, type: 3}
+  head: {fileID: 184855356}
+  tail: {fileID: 284997310}
+  snakeTransform: {fileID: 1378730375}
+  bodyParts: []
+  spawnGap: 7.3
 --- !u!1 &1583468610
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,6 +5,7 @@ using UnityEngine;
 public class PelletCollect : MonoBehaviour
 {
     [SerializeField] private GameObject pellet;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -23,8 +24,9 @@ public class PelletCollect : MonoBehaviour
         Pellet pellet = other.GetComponent<Pellet>();
         if (pellet != null)
         {
-            Debug.Log("A pellet was colected");
+            
             pellet.PelletCollect();
+            
         }
     }
 
