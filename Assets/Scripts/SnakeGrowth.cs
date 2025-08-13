@@ -52,12 +52,7 @@ public class SnakeGrowth : MonoBehaviour
         localPos.x -= spawnGap;
 
         tailPart.localPosition = localPos;
-
-        Debug.Log(bodyParts[bodyParts.Count-1]);
-
-
-        Debug.Log(tailPart.localPosition);
-        
+    
 
         
     }

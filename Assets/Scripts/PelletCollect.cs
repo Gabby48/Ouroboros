@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PelletCollect : MonoBehaviour
 {
-    [SerializeField] private GameObject pellet;
+  
     
 
     // Start is called before the first frame update

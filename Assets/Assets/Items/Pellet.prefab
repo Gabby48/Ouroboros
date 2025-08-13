@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8452239852850705475}
   - component: {fileID: 8452239852850705532}
   - component: {fileID: 8122176467738836669}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Pellet
   m_TagString: Untagged
   m_Icon: {fileID: 0}

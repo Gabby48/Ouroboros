@@ -19,6 +19,8 @@ public class Movement : MonoBehaviour
     [SerializeField] private bool canMoveL = true;
     [SerializeField] private bool canMoveU = true;
     [SerializeField] private bool canMoveD = true;
+
+
      
 
     // Start is called before the first frame update
