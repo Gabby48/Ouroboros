@@ -20,14 +20,26 @@ public class Movement : MonoBehaviour
     [SerializeField] private bool canMoveU = true;
     [SerializeField] private bool canMoveD = true;
 
+    private SnakeGrowth growth;
 
+    [SerializeField] private float followDistance = 0.1f;
+    
+    public List<Transform> bodyParts;
+    private List<Vector3> positionHistory = new List<Vector3>();
      
+
+    void Awake()
+    {
+        growth = GetComponentInChildren<SnakeGrowth>();
+        bodyParts = growth.bodyParts;
+    }
 
     // Start is called before the first frame update
     void Start()
     {
         moveDirection = new Vector3 (moveSpeed, 0, 0);
         canMoveD = false;
+        positionHistory.Clear();    
 
         
     }
@@ -92,6 +104,21 @@ public class Movement : MonoBehaviour
            
         }
         
+    }
+
+    void FixedUpdate()
+    {
+       positionHistory.Insert(0,transform.position);
+
+        for(int i = bodyParts.Count - 1  ; i > 0; i --)
+        {
+            Vector3 point = positionHistory[Mathf.Min(i * Mathf.RoundToInt(followDistance / Time.fixedDeltaTime), positionHistory.Count - 1)];
+            Vector3 moveDir = point - bodyParts[i].position;
+
+            bodyParts[i].position += moveDir * moveSpeed * Time.fixedDeltaTime;
+
+            
+        }
     }
 
 

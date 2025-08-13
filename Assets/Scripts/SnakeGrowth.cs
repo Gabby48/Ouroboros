@@ -10,7 +10,7 @@ public class SnakeGrowth : MonoBehaviour
     [SerializeField] private Transform tail;
 
     [SerializeField] private Transform snakeTransform;
-    [SerializeField] private List<Transform> bodyParts = new List<Transform>();
+    public List<Transform> bodyParts = new List<Transform>();
     [SerializeField] private float spawnGap = 6.4f;
 
     [SerializeField] private int snakeSize = 0;
