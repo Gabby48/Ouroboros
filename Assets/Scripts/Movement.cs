@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -7,6 +8,9 @@ public class Movement : MonoBehaviour
 {
     [SerializeField] private float moveTimer = 0f;
     [SerializeField] private float moveTimerMax = 0.1f;
+
+    [SerializeField] private float rotTimer = 0f;
+    [SerializeField] private float rotTimerMax = 1f;
 
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float rotUP = 90f;
@@ -20,28 +24,65 @@ public class Movement : MonoBehaviour
     [SerializeField] private bool canMoveU = true;
     [SerializeField] private bool canMoveD = true;
 
-    private SnakeGrowth growth;
+
+   [SerializeField] private GameObject bodyPrefab;
+    [SerializeField] private Transform head;
+   [SerializeField] private GameObject tailPrefab;
+    
+
+    [SerializeField] private float spawnGap = 6.4f;
+
+    [SerializeField] private int snakeSize = 0;
 
     [SerializeField] private float followDistance = 0.1f;
     
     public List<Transform> bodyParts;
-    private List<Vector3> positionHistory = new List<Vector3>();
+
+    
+     //private List<Vector3> positionHistory = new List<Vector3>();
      
+    public struct SnakeFrame
+    {
+        public Vector3 position;
+        public Quaternion rotation;
+
+        public SnakeFrame(Vector3 pos, Quaternion rot)
+        {
+            position = pos;
+            rotation = rot;
+        }
+       
+    }
+
+    private List<SnakeFrame> history = new List<SnakeFrame>();
 
     void Awake()
     {
-        growth = GetComponentInChildren<SnakeGrowth>();
-        bodyParts = growth.bodyParts;
+      
+        
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        bodyParts.Add(head);
+        GameObject tailObj = Instantiate(tailPrefab, head.position - Vector3.right * spawnGap, Quaternion.identity, head.parent);
+        bodyParts.Add(tailObj.transform);
+        snakeSize = 0;
+        Pellet.OnPelletCollected += Pellet_OnPelletCollected;
+
         moveDirection = new Vector3 (moveSpeed, 0, 0);
         canMoveD = false;
-        positionHistory.Clear();    
+        history.Clear();    
 
         
+    }
+
+
+    private void Pellet_OnPelletCollected(object sender, System.EventArgs e)
+    {
+        Grow();
+        snakeSize++;
     }
 
     // Update is called once per frame
@@ -97,39 +138,73 @@ public class Movement : MonoBehaviour
         }
 
         moveTimer += Time.deltaTime;
+        rotTimer += Time.deltaTime;
+
         if (moveTimer >= moveTimerMax)
         {
+            
+
             MoveObject(moveDirection,moveRotation);
             moveTimer = 0f;
+
+          
+
+            
            
         }
+
+     
         
+
+
     }
 
     void FixedUpdate()
     {
-       positionHistory.Insert(0,transform.position);
+      
 
-        for(int i = bodyParts.Count - 1  ; i > 0; i --)
-        {
-            Vector3 point = positionHistory[Mathf.Min(i * Mathf.RoundToInt(followDistance / Time.fixedDeltaTime), positionHistory.Count - 1)];
-            Vector3 moveDir = point - bodyParts[i].position;
-
-            bodyParts[i].position += moveDir * moveSpeed * Time.fixedDeltaTime;
-
-            
-        }
     }
 
 
     private void MoveObject(Vector3 moveDir, Vector3 moveRot)
     {
 
-        
-        transform.position += moveDir;
-        transform.rotation = Quaternion.Euler(moveRot);
+        head.position += moveDir;
+        head.rotation = Quaternion.Euler(moveRot);
+
+        history.Insert(0, new SnakeFrame(head.position,head.rotation));
+
+        if(history.Count > bodyParts.Count * 2)
+        {
+            history.RemoveAt(history.Count - 1);
+        }
+
+
+        for (int i = 1; i < bodyParts.Count;i++)
+        {
+            int index = i * 1;
+
+            if(index < history.Count)
+            {
+                bodyParts[i].position = history[index].position;
+                bodyParts[i].rotation = history[index].rotation;
+            }
+        }
+
     }
 
-   
-    
+
+    public void Grow()
+    {
+        Transform tailPart = bodyParts[bodyParts.Count - 1];
+
+        GameObject newBody = Instantiate(bodyPrefab, tailPart.position, Quaternion.identity, head.parent);
+        bodyParts.Insert(bodyParts.Count - 1, newBody.transform);
+
+
+
+
+    }
+
+
 }
