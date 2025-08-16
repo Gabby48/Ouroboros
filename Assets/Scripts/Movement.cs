@@ -7,12 +7,12 @@ using UnityEngine.EventSystems;
 public class Movement : MonoBehaviour
 {
     [SerializeField] private  LayerMask bodyLayer;
+    [SerializeField] private LayerMask wallLayer;
 
     [SerializeField] private float moveTimer = 0f;
     [SerializeField] private float moveTimerMax = 0.1f;
 
-    [SerializeField] private float rotTimer = 0f;
-    [SerializeField] private float rotTimerMax = 1f;
+    
 
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float rotUP = 90f;
@@ -36,7 +36,7 @@ public class Movement : MonoBehaviour
 
     [SerializeField] private int snakeSize = 0;
 
-    [SerializeField] private float followDistance = 0.1f;
+   
 
     [SerializeField] private float bodyhitCooldownTimer;
     [SerializeField] private float bodyhitCooldownTimerMax = 1f;
@@ -146,7 +146,7 @@ public class Movement : MonoBehaviour
         }
 
         moveTimer += Time.deltaTime;
-        rotTimer += Time.deltaTime;
+
         bodyhitCooldownTimer += Time.deltaTime;
 
         if (moveTimer >= moveTimerMax)
@@ -247,7 +247,34 @@ public class Movement : MonoBehaviour
             }
             
         }
+
+        if (((1 << other.gameObject.layer) & wallLayer) != 0)
+        {
+            Vector2 SnakePos = head.position;
+
+           
+            if(head.position.x >= 79)
+            {
+                head.position = new Vector3(-81, head.position.y, head.position.z);
+            }
+
+            
+            
+            if(head.position.y >= 39 )
+            {
+                head.position = new Vector3(head.position.x, -41, head.position.z);
+            }
+            
+        }
     }
+
+    private void WallChange()
+    {
+
+    }
+
+
+
 
 
 }

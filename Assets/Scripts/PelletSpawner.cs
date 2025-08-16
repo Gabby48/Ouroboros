@@ -7,7 +7,7 @@ public class PelletSpawner : MonoBehaviour
 {
     public GameObject pelletPrefab;
     public LayerMask wallLayer;
-   
+    public LayerMask playerLayer;
 
 
     [SerializeField] private float bottom, top, leftbound, rightbound;
@@ -43,11 +43,14 @@ public class PelletSpawner : MonoBehaviour
         RaycastHit2D hitRight = Physics2D.Raycast(originPoint, Vector2.right, Mathf.Infinity, wallLayer);
         rightbound = hitRight.point.x;
 
-        RaycastHit2D hitDown = Physics2D.Raycast(originPoint, Vector2.down, Mathf.Infinity, wallLayer);
+        RaycastHit2D hitDown = Physics2D.Raycast(originPoint, Vector2.down, Mathf.Infinity, wallLayer );
         bottom = hitDown.point.y;
 
         RaycastHit2D hitUp = Physics2D.Raycast(originPoint, Vector2.up, Mathf.Infinity, wallLayer);
         top = hitUp.point.y;
+
+
+       
 
     }
 
