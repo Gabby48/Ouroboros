@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1530282691596837059}
   - component: {fileID: 3557193604142730013}
   - component: {fileID: 339125888887402911}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Snake Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93,10 +93,10 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.026588324}
+  m_Offset: {x: 0.0070888437, y: -0.028119296}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -107,5 +107,5 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.16, y: 0.10682335}
+  m_Size: {x: 0.11070242, y: 0.07124813}
   m_EdgeRadius: 0

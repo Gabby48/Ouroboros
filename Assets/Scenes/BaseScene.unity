@@ -235,6 +235,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76ec7b0f3e4cb06428f9598c2b6bfd27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bodyLayer:
+    serializedVersion: 2
+    m_Bits: 256
   moveTimer: 0
   moveTimerMax: 0.1
   rotTimer: 0
@@ -255,6 +258,7 @@ MonoBehaviour:
   snakeSize: 0
   followDistance: 0.1
   bodyParts: []
+  stepsPerSegment: 1
 --- !u!1 &297083357
 GameObject:
   m_ObjectHideFlags: 0

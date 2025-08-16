@@ -6,6 +6,8 @@ using UnityEngine.EventSystems;
 
 public class Movement : MonoBehaviour
 {
+    [SerializeField] private  LayerMask bodyLayer;
+
     [SerializeField] private float moveTimer = 0f;
     [SerializeField] private float moveTimerMax = 0.1f;
 
@@ -35,8 +37,14 @@ public class Movement : MonoBehaviour
     [SerializeField] private int snakeSize = 0;
 
     [SerializeField] private float followDistance = 0.1f;
+
+    [SerializeField] private float bodyhitCooldownTimer;
+    [SerializeField] private float bodyhitCooldownTimerMax = 1f;
     
     public List<Transform> bodyParts;
+
+    public int stepsPerSegment = 1;
+
 
     
      //private List<Vector3> positionHistory = new List<Vector3>();
@@ -139,6 +147,7 @@ public class Movement : MonoBehaviour
 
         moveTimer += Time.deltaTime;
         rotTimer += Time.deltaTime;
+        bodyhitCooldownTimer += Time.deltaTime;
 
         if (moveTimer >= moveTimerMax)
         {
@@ -174,7 +183,7 @@ public class Movement : MonoBehaviour
 
         history.Insert(0, new SnakeFrame(head.position,head.rotation));
 
-        if(history.Count > bodyParts.Count * 2)
+        if(history.Count > bodyParts.Count * stepsPerSegment +1)
         {
             history.RemoveAt(history.Count - 1);
         }
@@ -182,7 +191,7 @@ public class Movement : MonoBehaviour
 
         for (int i = 1; i < bodyParts.Count;i++)
         {
-            int index = i * 1;
+            int index = i * stepsPerSegment;
 
             if(index < history.Count)
             {
@@ -199,11 +208,45 @@ public class Movement : MonoBehaviour
         Transform tailPart = bodyParts[bodyParts.Count - 1];
 
         GameObject newBody = Instantiate(bodyPrefab, tailPart.position, Quaternion.identity, head.parent);
+
+       
+
         bodyParts.Insert(bodyParts.Count - 1, newBody.transform);
 
 
 
 
+    }
+
+    public void Shrink(Transform Bodyhit, int index)
+    {
+         
+        Destroy(Bodyhit.gameObject);
+
+        bodyParts.RemoveAt(index);
+        
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if(((1 << other.gameObject.layer) & bodyLayer) != 0)
+        {
+            float touchDistance = Vector2.Distance(transform.position, other.transform.position);
+
+            if (touchDistance > 0.5f && bodyhitCooldownTimer >= bodyhitCooldownTimerMax) 
+            {
+                bodyhitCooldownTimer = 0f;
+                
+                Transform bodyHit = other.transform;
+
+                int index = bodyParts.IndexOf(bodyHit);
+
+                Shrink(bodyHit, index);
+
+                
+            }
+            
+        }
     }
 
 
