@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using System;
 
 public class Movement : MonoBehaviour
 {
@@ -47,10 +48,11 @@ public class Movement : MonoBehaviour
 
     public int stepsPerSegment = 1;
 
+    public static event EventHandler OnCycleComplete;
+
 
     
-     //private List<Vector3> positionHistory = new List<Vector3>();
-     
+    
     public struct SnakeFrame
     {
         public Vector3 position;
@@ -252,7 +254,7 @@ public class Movement : MonoBehaviour
 
         if (((1 << other.gameObject.layer) & wallLayer) != 0)
         {
-            Vector2 SnakePos = head.position;
+            
 
           
                 if (head.position.x >= 79)
@@ -280,6 +282,8 @@ public class Movement : MonoBehaviour
 
         if(((1 << other.gameObject.layer) & tailLayer) != 0)
         {
+            OnCycleComplete?.Invoke(this, EventArgs.Empty);
+            Time.timeScale = 0f;
             Debug.Log("You've Completed the Cycle");
         }
 
