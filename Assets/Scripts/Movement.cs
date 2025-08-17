@@ -252,19 +252,29 @@ public class Movement : MonoBehaviour
         {
             Vector2 SnakePos = head.position;
 
-           
-            if(head.position.x >= 79)
-            {
-                head.position = new Vector3(-81, head.position.y, head.position.z);
-            }
+          
+                if (head.position.x >= 79)
+                {
+                    head.position = new Vector3(-75, head.position.y, head.position.z);
+                }
+                else if (head.position.x <= -79)
+                {
+                    head.position = new Vector3(75, head.position.y, head.position.z);
+                }
+
+
+                if (head.position.y >= 39)
+                {
+                    head.position = new Vector3(head.position.x, -35, head.position.z);
+                }
+                else if (head.position.y <= -36)
+                {
+                    
+                    head.position = new Vector3(head.position.x, 35, head.position.z);
+                }
 
             
-            
-            if(head.position.y >= 39 )
-            {
-                head.position = new Vector3(head.position.x, -41, head.position.z);
-            }
-            
+
         }
     }
 
