@@ -8,6 +8,8 @@ public class Movement : MonoBehaviour
 {
     [SerializeField] private  LayerMask bodyLayer;
     [SerializeField] private LayerMask wallLayer;
+    [SerializeField] private LayerMask tailLayer;
+
 
     [SerializeField] private float moveTimer = 0f;
     [SerializeField] private float moveTimerMax = 0.1f;
@@ -273,9 +275,14 @@ public class Movement : MonoBehaviour
                     head.position = new Vector3(head.position.x, 35, head.position.z);
                 }
 
-            
 
         }
+
+        if(((1 << other.gameObject.layer) & tailLayer) != 0)
+        {
+            Debug.Log("You've Completed the Cycle");
+        }
+
     }
 
     private void WallChange()
