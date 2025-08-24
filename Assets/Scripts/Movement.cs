@@ -149,6 +149,8 @@ public class Movement : MonoBehaviour
             canMoveD = true;
         }
 
+
+      
         moveTimer += Time.deltaTime;
 
         bodyhitCooldownTimer += Time.deltaTime;
@@ -171,6 +173,7 @@ public class Movement : MonoBehaviour
 
 
     }
+
 
     void FixedUpdate()
     {
@@ -207,29 +210,9 @@ public class Movement : MonoBehaviour
     }
 
 
-    public void Grow()
-    {
-        Transform tailPart = bodyParts[bodyParts.Count - 1];
+    
 
-        GameObject newBody = Instantiate(bodyPrefab, tailPart.position, Quaternion.identity, head.parent);
-
-       
-
-        bodyParts.Insert(bodyParts.Count - 1, newBody.transform);
-
-
-
-
-    }
-
-    public void Shrink(Transform Bodyhit, int index)
-    {
-         
-        Destroy(Bodyhit.gameObject);
-
-        bodyParts.RemoveAt(index);
-        
-    }
+  
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -245,7 +228,7 @@ public class Movement : MonoBehaviour
 
                 int index = bodyParts.IndexOf(bodyHit);
 
-                Shrink(bodyHit, index);
+                Shrink(index);
 
                 
             }
@@ -294,6 +277,51 @@ public class Movement : MonoBehaviour
 
     }
 
+
+    public void Grow()
+    {
+        Transform tailPart = bodyParts[bodyParts.Count - 1];
+
+        GameObject newBody = Instantiate(bodyPrefab, tailPart.position, Quaternion.identity, head.parent);
+
+       
+
+        bodyParts.Insert(bodyParts.Count - 1, newBody.transform);
+
+
+
+
+    }
+    public void Shrink(int index = -1)
+    {
+        if(index == -1)
+        {
+            index = bodyParts.Count - 2;
+
+        }
+
+        if(index>0 && index < bodyParts.Count - 1)
+        {
+            Transform parttoRemove = bodyParts[index];
+            Destroy(parttoRemove.gameObject);
+            bodyParts.RemoveAt(index);
+            snakeSize--;
+        }
+
+        Debug.Log("character has shrunk");
+
+    }
+
+    public void QuickShrink()
+    {
+        snakeSize = 0;
+        for (int i = 1; i < bodyParts.Count -1; i++)
+        {
+            Shrink(i);
+        }
+
+        Debug.Log("We have shrunk to base");
+    }
 
 
 
