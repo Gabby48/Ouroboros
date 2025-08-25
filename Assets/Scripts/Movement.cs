@@ -43,6 +43,10 @@ public class Movement : MonoBehaviour
 
     [SerializeField] private float bodyhitCooldownTimer;
     [SerializeField] private float bodyhitCooldownTimerMax = 1f;
+
+    [SerializeField] private float detectBuffer = 1f;
+    [SerializeField] private float spawnBuffer = 5f;
+    
     
     public List<Transform> bodyParts;
 
@@ -93,13 +97,14 @@ public class Movement : MonoBehaviour
 
     private void Pellet_OnPelletCollected(object sender, System.EventArgs e)
     {
-        Grow();
-        snakeSize++;
+        MultiGrow();
+       
     }
 
     // Update is called once per frame
     void Update()
     {
+       
 
         if (Input.GetKey(KeyCode.W) && canMoveU)
         {
@@ -149,6 +154,7 @@ public class Movement : MonoBehaviour
             canMoveD = true;
         }
 
+        
 
       
         moveTimer += Time.deltaTime;
@@ -237,24 +243,24 @@ public class Movement : MonoBehaviour
 
         if (((1 << other.gameObject.layer) & wallLayer) != 0)
         {
-            
 
+            Debug.Log(head.position);
           
-                if (head.position.x >= 79)
+                if (head.position.x >= GameHandler.Instance.rightbound - detectBuffer)
                 {
                     head.position = new Vector3(-75, head.position.y, head.position.z);
                 }
-                else if (head.position.x <= -79)
+                else if (head.position.x <= GameHandler.Instance.leftbound + detectBuffer)
                 {
                     head.position = new Vector3(75, head.position.y, head.position.z);
                 }
 
 
-                if (head.position.y >= 39)
+                if (head.position.y >= GameHandler.Instance.top - detectBuffer)
                 {
                     head.position = new Vector3(head.position.x, -35, head.position.z);
                 }
-                else if (head.position.y <= -36)
+                else if (head.position.y <= GameHandler.Instance.bottom + detectBuffer)
                 {
                     
                     head.position = new Vector3(head.position.x, 35, head.position.z);
@@ -288,10 +294,20 @@ public class Movement : MonoBehaviour
 
         bodyParts.Insert(bodyParts.Count - 1, newBody.transform);
 
-
+        snakeSize++;
 
 
     }
+
+    public void MultiGrow(int index = 1)
+    {
+        for(int i = 0; i < index; i++)
+        {
+            Debug.Log("The player has grown");
+            Grow();
+        }
+    }
+
     public void Shrink(int index = -1)
     {
         if(index == -1)
@@ -315,7 +331,7 @@ public class Movement : MonoBehaviour
     public void QuickShrink()
     {
         snakeSize = 0;
-        for (int i = 1; i < bodyParts.Count -1; i++)
+        for (int i = bodyParts.Count-1 ; i > 0; i--)
         {
             Shrink(i);
         }

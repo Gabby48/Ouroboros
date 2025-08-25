@@ -12,6 +12,7 @@ public class CycleComplete : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI cyclecompleteperkText;
     [SerializeField] private Button nextCycle;
+    [SerializeField] private Movement movement;
 
     private const string perkText = "You are faster - Movement Speed *1.5x";
 
@@ -60,7 +61,8 @@ public class CycleComplete : MonoBehaviour
     private void RestartGame()
     {
         Time.timeScale = 1f;
-        UnityEngine.SceneManagement.Scene currentScene = SceneManager.GetActiveScene();
-        SceneManager.LoadScene(currentScene.buildIndex);
+        Hide();
+        movement.QuickShrink();
+        
     }
 }
