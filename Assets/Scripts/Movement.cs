@@ -44,8 +44,8 @@ public class Movement : MonoBehaviour
     [SerializeField] private float bodyhitCooldownTimer;
     [SerializeField] private float bodyhitCooldownTimerMax = 1f;
 
-    [SerializeField] private float detectBuffer = 1f;
-    [SerializeField] private float spawnBuffer = 5f;
+    [SerializeField] private float detectBuffer = 2f;
+  
     
     
     public List<Transform> bodyParts;
@@ -246,24 +246,24 @@ public class Movement : MonoBehaviour
 
             Debug.Log(head.position);
           
-                if (head.position.x >= GameHandler.Instance.rightbound - detectBuffer)
+                if (head.position.x >= GameHandler.Instance.rightbound)
                 {
-                    head.position = new Vector3(-75, head.position.y, head.position.z);
+                    head.position = new Vector3(GameHandler.Instance.leftbound + detectBuffer, head.position.y, head.position.z);
                 }
-                else if (head.position.x <= GameHandler.Instance.leftbound + detectBuffer)
+                else if (head.position.x <= GameHandler.Instance.leftbound)
                 {
-                    head.position = new Vector3(75, head.position.y, head.position.z);
+                    head.position = new Vector3(GameHandler.Instance.rightbound - detectBuffer, head.position.y, head.position.z);
                 }
 
 
-                if (head.position.y >= GameHandler.Instance.top - detectBuffer)
+                if (head.position.y >= GameHandler.Instance.top)
                 {
-                    head.position = new Vector3(head.position.x, -35, head.position.z);
+                    head.position = new Vector3(head.position.x, GameHandler.Instance.bottom + detectBuffer, head.position.z);
                 }
-                else if (head.position.y <= GameHandler.Instance.bottom + detectBuffer)
+                else if (head.position.y <= GameHandler.Instance.bottom)
                 {
                     
-                    head.position = new Vector3(head.position.x, 35, head.position.z);
+                    head.position = new Vector3(head.position.x, GameHandler.Instance.top - detectBuffer, head.position.z);
                 }
 
 

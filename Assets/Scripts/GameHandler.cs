@@ -8,6 +8,8 @@ public class GameHandler : MonoBehaviour
   
 
     public float bottom, top, leftbound, rightbound;
+
+    [SerializeField] private float spawnBuffer = 3f;
     
     public static GameHandler Instance { get; private set; }
 
@@ -34,21 +36,22 @@ public class GameHandler : MonoBehaviour
         Vector2 originPoint = Vector2.zero;
 
         RaycastHit2D hitLeft = Physics2D.Raycast(originPoint, Vector2.left, Mathf.Infinity, wallLayer);
-        leftbound = hitLeft.point.x;
+        leftbound = hitLeft.point.x + spawnBuffer;
+
         Debug.Log("leftbound" + leftbound);
         
 
         RaycastHit2D hitRight = Physics2D.Raycast(originPoint, Vector2.right, Mathf.Infinity, wallLayer);
-        rightbound = hitRight.point.x;
+        rightbound = hitRight.point.x - spawnBuffer;
         Debug.Log("rightbound" + rightbound);
 
 
         RaycastHit2D hitDown = Physics2D.Raycast(originPoint, Vector2.down, Mathf.Infinity, wallLayer);
-        bottom = hitDown.point.y;
+        bottom = hitDown.point.y + spawnBuffer;
         Debug.Log("bottom" + bottom);
 
         RaycastHit2D hitUp = Physics2D.Raycast(originPoint, Vector2.up, Mathf.Infinity, wallLayer);
-        top = hitUp.point.y;
+        top = hitUp.point.y - spawnBuffer;
         Debug.Log("top" + top);
         
 

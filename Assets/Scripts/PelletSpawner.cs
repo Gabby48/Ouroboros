@@ -7,6 +7,7 @@ public class PelletSpawner : MonoBehaviour
 {
     public GameObject pelletPrefab;
     
+    
  
 
 
@@ -40,7 +41,15 @@ public class PelletSpawner : MonoBehaviour
         float y = UnityEngine.Random.Range(GameHandler.Instance.bottom, GameHandler.Instance.top);
 
         Vector2 spawnPos = new Vector2(x, y);
+
+        RaycastHit2D hit = Physics2D.Raycast(spawnPos, Vector2.zero);
+
+      
         Instantiate(pelletPrefab, spawnPos, Quaternion.identity);
+        
+       
+
+     
 
         
     }
