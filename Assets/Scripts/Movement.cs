@@ -44,7 +44,7 @@ public class Movement : MonoBehaviour
     [SerializeField] private float bodyhitCooldownTimer;
     [SerializeField] private float bodyhitCooldownTimerMax = 1f;
 
-    [SerializeField] private float detectBuffer = 2f;
+    [SerializeField] private float detectBuffer = 1f;
   
     
     
@@ -104,7 +104,7 @@ public class Movement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       
+       HandleEdges();
 
         if (Input.GetKey(KeyCode.W) && canMoveU)
         {
@@ -246,25 +246,7 @@ public class Movement : MonoBehaviour
 
             Debug.Log(head.position);
           
-                if (head.position.x >= GameHandler.Instance.rightbound)
-                {
-                    head.position = new Vector3(GameHandler.Instance.leftbound + detectBuffer, head.position.y, head.position.z);
-                }
-                else if (head.position.x <= GameHandler.Instance.leftbound)
-                {
-                    head.position = new Vector3(GameHandler.Instance.rightbound - detectBuffer, head.position.y, head.position.z);
-                }
-
-
-                if (head.position.y >= GameHandler.Instance.top)
-                {
-                    head.position = new Vector3(head.position.x, GameHandler.Instance.bottom + detectBuffer, head.position.z);
-                }
-                else if (head.position.y <= GameHandler.Instance.bottom)
-                {
-                    
-                    head.position = new Vector3(head.position.x, GameHandler.Instance.top - detectBuffer, head.position.z);
-                }
+                
 
 
         }
@@ -340,6 +322,28 @@ public class Movement : MonoBehaviour
     }
 
 
+    private void HandleEdges()
+    {
+        if (head.position.x >= GameHandler.Instance.rightbound)
+        {
+            head.position = new Vector3(GameHandler.Instance.leftbound + detectBuffer, head.position.y, head.position.z);
+        }
+        else if (head.position.x <= GameHandler.Instance.leftbound)
+        {
+            head.position = new Vector3(GameHandler.Instance.rightbound - detectBuffer, head.position.y, head.position.z);
+        }
+
+
+        if (head.position.y >= GameHandler.Instance.top + detectBuffer)
+        {
+            head.position = new Vector3(head.position.x, GameHandler.Instance.bottom + detectBuffer, head.position.z);
+        }
+        else if (head.position.y <= GameHandler.Instance.bottom)
+        {
+
+            head.position = new Vector3(head.position.x, GameHandler.Instance.top - detectBuffer, head.position.z);
+        }
+    }
 
 
 }
