@@ -10,6 +10,7 @@ public class Movement : MonoBehaviour
     [SerializeField] private  LayerMask bodyLayer;
     [SerializeField] private LayerMask wallLayer;
     [SerializeField] private LayerMask tailLayer;
+    [SerializeField] private LayerMask WrapAroundlayer;
 
 
     [SerializeField] private float moveTimer = 0f;
@@ -29,8 +30,13 @@ public class Movement : MonoBehaviour
     [SerializeField] private bool canMoveU = true;
     [SerializeField] private bool canMoveD = true;
 
+    [SerializeField] private bool canWrapAroundR = true;
+    [SerializeField] private bool canWrapAroundL = true;
+    [SerializeField] private bool canWrapAroundU = true;
+    [SerializeField] private bool canWrapAroundD = true;
 
-   [SerializeField] private GameObject bodyPrefab;
+
+    [SerializeField] private GameObject bodyPrefab;
     [SerializeField] private Transform head;
    [SerializeField] private GameObject tailPrefab;
     
@@ -222,7 +228,15 @@ public class Movement : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if(((1 << other.gameObject.layer) & bodyLayer) != 0)
+        if (((1 << other.gameObject.layer) & WrapAroundlayer) != 0)
+        {
+            canWrapAroundD = true;
+            canWrapAroundL = true;
+            canWrapAroundR = true;
+            canWrapAroundU = true;
+        }
+
+            if (((1 << other.gameObject.layer) & bodyLayer) != 0)
         {
             float touchDistance = Vector2.Distance(transform.position, other.transform.position);
 
@@ -241,15 +255,7 @@ public class Movement : MonoBehaviour
             
         }
 
-        if (((1 << other.gameObject.layer) & wallLayer) != 0)
-        {
-
-            Debug.Log(head.position);
-          
-                
-
-
-        }
+  
 
         if(((1 << other.gameObject.layer) & tailLayer) != 0)
         {
@@ -324,25 +330,34 @@ public class Movement : MonoBehaviour
 
     private void HandleEdges()
     {
-        if (head.position.x >= GameHandler.Instance.rightbound)
+        if (head.position.x >= GameHandler.Instance.rightbound && canWrapAroundL)
         {
-            head.position = new Vector3(GameHandler.Instance.leftbound + detectBuffer, head.position.y, head.position.z);
+            head.position = new Vector3(GameHandler.Instance.leftbound , head.position.y, head.position.z);
+            canWrapAroundR = false;
+           
         }
-        else if (head.position.x <= GameHandler.Instance.leftbound)
+        else if (head.position.x <= GameHandler.Instance.leftbound && canWrapAroundR)
         {
-            head.position = new Vector3(GameHandler.Instance.rightbound - detectBuffer, head.position.y, head.position.z);
+            head.position = new Vector3(GameHandler.Instance.rightbound, head.position.y, head.position.z);
+            
+            canWrapAroundL = false;
         }
 
+        
 
-        if (head.position.y >= GameHandler.Instance.top + detectBuffer)
+        if (head.position.y >= GameHandler.Instance.top && canWrapAroundU)
         {
             head.position = new Vector3(head.position.x, GameHandler.Instance.bottom + detectBuffer, head.position.z);
+
+            canMoveD = false;
         }
-        else if (head.position.y <= GameHandler.Instance.bottom)
+        else if (head.position.y <= GameHandler.Instance.bottom && canWrapAroundD)
         {
 
-            head.position = new Vector3(head.position.x, GameHandler.Instance.top - detectBuffer, head.position.z);
-        }
+            head.position = new Vector3(head.position.x, GameHandler.Instance.top  + detectBuffer, head.position.z);
+
+            canWrapAroundU = false;
+        } 
     }
 
 
