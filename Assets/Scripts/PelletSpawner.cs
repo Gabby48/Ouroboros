@@ -6,7 +6,7 @@ using System;
 public class PelletSpawner : MonoBehaviour
 {
     public GameObject pelletPrefab;
-    
+    [SerializeField] private float distanceBuffer = 5f;
     
  
 
@@ -37,15 +37,26 @@ public class PelletSpawner : MonoBehaviour
    
     public void SpawnPellet()
     {
-        float x = UnityEngine.Random.Range(GameHandler.Instance.leftbound, GameHandler.Instance.rightbound);
-        float y = UnityEngine.Random.Range(GameHandler.Instance.bottom, GameHandler.Instance.top);
+        float x = UnityEngine.Random.Range(GameHandler.Instance.leftbound + distanceBuffer, GameHandler.Instance.rightbound - distanceBuffer);
+        float y = UnityEngine.Random.Range(GameHandler.Instance.bottom + distanceBuffer, GameHandler.Instance.top - distanceBuffer);
 
+        
         Vector2 spawnPos = new Vector2(x, y);
 
-        RaycastHit2D hit = Physics2D.Raycast(spawnPos, Vector2.zero);
+        Debug.Log(x);
+        Debug.Log(y);
+        Collider2D hit = Physics2D.OverlapPoint(spawnPos);
+        if (hit != null)
+        {
+            SpawnPellet();
+        }
+        if(hit == null)
+        {
+            Instantiate(pelletPrefab, spawnPos, Quaternion.identity);
 
+        }
       
-        Instantiate(pelletPrefab, spawnPos, Quaternion.identity);
+        
         
        
 

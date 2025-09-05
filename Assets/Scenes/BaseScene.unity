@@ -691,6 +691,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pelletPrefab: {fileID: 8452239852850705533, guid: 0e0dacf664949b2429fa4d3c894f2706, type: 3}
+  distanceBuffer: 5
 --- !u!1 &372111640
 GameObject:
   m_ObjectHideFlags: 0
